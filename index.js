@@ -12,14 +12,10 @@ io.on('connection', function(socket){
     socket.emit('system message', "connection established");
     socket.emit('system message', "server build " + version);
     socket.broadcast.emit('system message', "someone has joined the server");
-/*
-    var clientList;
-    io.clients((error, clients) => {
-        if (error) throw error;
-        clientList = clients;
-    });
+
+    var clientList = Object.keys(io.sockets.sockets);
     io.emit('system message', "population: " + clientList.length);
-    */
+
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
     });
