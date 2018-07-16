@@ -33,6 +33,10 @@
           $('#messages').append($('<li>').text(msg));
           window.scrollTo(0, document.body.scrollHeight);
         });
+        socket.on('system message', function(msg){
+          $('#messages').append('<li><b>').append(document.createTextNode(msg)).append('</b></li>');
+          window.scrollTo(0, document.body.scrollHeight);
+        });
       });
     </script>
   </body>
