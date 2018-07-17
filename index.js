@@ -16,7 +16,7 @@ io.on('connection', function(socket){
     socket.broadcast.emit('system message', socket.handshake.address + ' has joined the server');
 
     //var clientList = Object.keys(io.sockets.sockets);
-    io.emit('system message', 'population: ' + io.sockets.sockets.length;//clientList.length);
+    io.emit('system message', 'population: ' + io.sockets.sockets.length);//clientList.length);
 
     socket.on('chat message', function(msg){
         io.emit('chat message', socket.id + ": " + msg);
