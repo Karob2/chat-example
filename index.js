@@ -13,30 +13,27 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
     socket.emit('system message', 'connection established');
     socket.emit('system message', 'server build ' + version);
-    socket.broadcast.emit('system message', socket.handshake.address + ' has joined the server');
+    socket.broadcast.emit('system message', socket.id + ' has joined the server');
 
-    //var clientList = Object.keys(io.sockets.sockets);
-    io.emit('system message', 'population: ' + io.sockets.sockets.length);//clientList.length);
+    var clientList = Object.keys(io.sockets.sockets);
+    io.emit('system message', 'population: ' + clientList.length);
 
     socket.on('chat message', function(msg){
         io.emit('chat message', socket.id + ": " + msg);
     });
     socket.on('disconnect', function(reason){
-        socket.broadcast.emit('system message', socket.handshake.address + ' has disconnected: ' + reason);
+        socket.broadcast.emit('system message', socket.id + ' has disconnected: ' + reason);
         socket.emit('system message', 'you disconnected: ' + reason);
         var clientList = Object.keys(io.sockets.sockets);
         io.emit('system message', 'population: ' + clientList.length);
     });
     socket.on('disconnecting', function(reason){
-        socket.broadcast.emit('system message', socket.handshake.address + ' is disconnecting: ' + reason);
+        socket.broadcast.emit('system message', socket.id + ' is disconnecting: ' + reason);
         socket.emit('system message', 'you are disconnecting: ' + reason);
     });
-    /*
-    socket.on('request', function(desc){
-        socket.broadcast.emit('system message', socket.handshake.address + ' is disconnecting: ' + reason);
-        socket.emit('system message', 'you are disconnecting: ' + reason);
+    socket.on('call', function(peer, desc){
+        io.sockets.sockets[peer].emit('system message', socket.id + " wants to connect with you");
     });
-    */
 });
 io.on('disconnect', function(reason){
     io.emit('system message', 'server disconnect: ' + reason);
