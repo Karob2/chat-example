@@ -59,7 +59,8 @@ function setupListeners(socket) {
         }
     });
     socket.on('send signaling', function(o){
+        var targetId = o.peerId;
         o.peerId = socket.id;
-        io.sockets.sockets[o.peerId].emit('receive signaling', o);
+        io.sockets.sockets[targetId].emit('receive signaling', o);
     });
 }
